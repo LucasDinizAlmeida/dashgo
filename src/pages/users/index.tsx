@@ -1,4 +1,5 @@
-import { Box, Button, Checkbox, Flex, Heading, HStack, Icon, Table, Thead, Tr, Text, Tbody, Td, Th } from "@chakra-ui/react";
+import { Box, Button, Checkbox, Flex, Heading, HStack, Icon, Table, Thead, Tr, Text, Tbody, Td, Th, useBreakpointValue } from "@chakra-ui/react";
+import Link from 'next/link'
 import { RiAddLine, RiPencilLine } from "react-icons/ri";
 import { Header } from "../../components/Header";
 import { Pagination } from "../../components/Pagination";
@@ -6,6 +7,11 @@ import { Sidebar } from "../../components/Sidebar";
 
 
 export default function UserList() {
+
+  const isWideVersion = useBreakpointValue({
+    base: false,
+    lg: true
+  })
 
   return (
     <Box>
@@ -18,14 +24,16 @@ export default function UserList() {
           <HStack justifyContent="space-between" alignItems="center" mb="8">
             <Heading size="lg" fontWeight="normal" color="gray.100">Usuários</Heading>
 
-            <Button
-              as="a"
-              fontSize="sm"
-              colorScheme="pink"
-              leftIcon={<Icon as={RiAddLine} size={22} />}
-            >
-              Criar Novo
-            </Button>
+            <Link href="/users/create">
+              <Button
+                as="a"
+                fontSize="sm"
+                colorScheme="pink"
+                leftIcon={<Icon as={RiAddLine} size={22} />}
+              >
+                Criar Novo
+              </Button>
+            </Link>
           </HStack>
 
           <Table colorScheme="whiteAlpha">
@@ -35,7 +43,7 @@ export default function UserList() {
                   <Checkbox colorScheme="pink" />
                 </Th>
                 <Th>USUÁRIO</Th>
-                <Th>DATA DE CADASTRO</Th>
+                {isWideVersion && <Th>DATA DE CADASTRO</Th>}
                 <Th width="8"></Th>
               </Tr>
             </Thead>
@@ -51,9 +59,9 @@ export default function UserList() {
                     <Text color="gray.300" fontSize="sm">almeidalucas820@gmail.com</Text>
                   </Box>
                 </Td>
-                <Td>04 de Abril, 2022</Td>
+                {isWideVersion && <Td>04 de Abril, 2022</Td>}
                 <Td>
-                  <Button
+                  {isWideVersion && <Button
                     as="a"
                     size="sm"
                     fontSize="sm"
@@ -61,7 +69,7 @@ export default function UserList() {
                     leftIcon={<Icon as={RiPencilLine} size={16} />}
                   >
                     Editar
-                  </Button>
+                  </Button>}
                 </Td>
               </Tr>
               <Tr>
@@ -74,9 +82,9 @@ export default function UserList() {
                     <Text color="gray.300" fontSize="sm">almeidalucas820@gmail.com</Text>
                   </Box>
                 </Td>
-                <Td>04 de Abril, 2022</Td>
+                {isWideVersion && <Td>04 de Abril, 2022</Td>}
                 <Td>
-                  <Button
+                  {isWideVersion && <Button
                     as="a"
                     size="sm"
                     fontSize="sm"
@@ -84,7 +92,7 @@ export default function UserList() {
                     leftIcon={<Icon as={RiPencilLine} size={16} />}
                   >
                     Editar
-                  </Button>
+                  </Button>}
                 </Td>
               </Tr>
               <Tr>
@@ -97,9 +105,9 @@ export default function UserList() {
                     <Text color="gray.300" fontSize="sm">almeidalucas820@gmail.com</Text>
                   </Box>
                 </Td>
-                <Td>04 de Abril, 2022</Td>
+                {isWideVersion && <Td>04 de Abril, 2022</Td>}
                 <Td>
-                  <Button
+                  {isWideVersion && <Button
                     as="a"
                     size="sm"
                     fontSize="sm"
@@ -107,7 +115,7 @@ export default function UserList() {
                     leftIcon={<Icon as={RiPencilLine} size={16} />}
                   >
                     Editar
-                  </Button>
+                  </Button>}
                 </Td>
               </Tr>
 
