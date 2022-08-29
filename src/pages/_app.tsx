@@ -5,18 +5,27 @@ import { SidebarDrawerContextProvider } from '../contexts/SidebarDrawerContext'
 import { startMakeServer } from '../services/mirage'
 import { theme } from '../styles/theme'
 
+import { QueryClientProvider, QueryClient } from 'react-query'
+import { ReactQueryDevtools } from 'react-query/devtools'
+
 if (process.env.NODE_ENV === 'development') {
   startMakeServer()
 }
 
+const client = new QueryClient()
+
 
 function MyApp({ Component, pageProps }: AppProps) {
   return (
-    <ChakraProvider theme={theme}>
-      <SidebarDrawerContextProvider>
-        <Component {...pageProps} />
-      </SidebarDrawerContextProvider>
-    </ChakraProvider>
+    <QueryClientProvider client={client}>
+      <ChakraProvider theme={theme}>
+        <SidebarDrawerContextProvider>
+          <Component {...pageProps} />
+        </SidebarDrawerContextProvider>
+      </ChakraProvider>
+
+      <ReactQueryDevtools />
+    </QueryClientProvider>
   )
 
 }
