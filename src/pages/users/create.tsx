@@ -5,8 +5,12 @@ import { Sidebar } from "../../components/Sidebar";
 import { useForm, SubmitHandler } from 'react-hook-form'
 import * as yup from 'yup'
 import { yupResolver } from '@hookform/resolvers/yup'
+import { useMutation } from 'react-query';
 
 import Link from 'next/link'
+import { api } from "../../services/api";
+import { useRouter } from "next/router";
+import { queryClient } from "../../services/queryClient";
 
 type SignInFormData = {
   name: string,
@@ -26,13 +30,30 @@ const schema = yup.object({
 
 export default function CreateUser() {
 
+  const router = useRouter()
+
+  const createUser = useMutation(async (user: SignInFormData) => {
+    const response = await api.post('users', {
+      user: {
+        ...user,
+        create_at: new Date()
+      }
+    })
+
+    return response.data.user
+  }, {
+    onSuccess: () => {
+      queryClient.invalidateQueries('users')
+    }
+  })
+
   const { handleSubmit, register, formState } = useForm({ resolver: yupResolver(schema) })
   const { errors, isSubmitting } = formState
 
   const handleCreateNewUser: SubmitHandler<SignInFormData> = async (values) => {
-    await new Promise(resolve => setTimeout(resolve, 2000))
+    await createUser.mutateAsync(values)
 
-    console.log(values)
+    router.push('/users')
   }
 
   return (

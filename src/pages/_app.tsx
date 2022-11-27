@@ -7,17 +7,18 @@ import { theme } from '../styles/theme'
 
 import { QueryClientProvider, QueryClient } from 'react-query'
 import { ReactQueryDevtools } from 'react-query/devtools'
+import { queryClient } from '../services/queryClient'
 
 if (process.env.NODE_ENV === 'development') {
   startMakeServer()
 }
 
-const client = new QueryClient()
+
 
 
 function MyApp({ Component, pageProps }: AppProps) {
   return (
-    <QueryClientProvider client={client}>
+    <QueryClientProvider client={queryClient}>
       <ChakraProvider theme={theme}>
         <SidebarDrawerContextProvider>
           <Component {...pageProps} />

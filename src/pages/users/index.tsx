@@ -1,23 +1,41 @@
-import { Box, Button, Checkbox, Flex, Heading, HStack, Icon, Table, Thead, Tr, Text, Tbody, Td, Th, useBreakpointValue, Spinner } from "@chakra-ui/react";
-import Link from 'next/link'
+import { Box, Button, Checkbox, Flex, Heading, HStack, Icon, Table, Thead, Tr, Text, Tbody, Td, Th, useBreakpointValue, Spinner, Link } from "@chakra-ui/react";
+import NextLink from 'next/link';
 import { RiAddLine, RiPencilLine } from "react-icons/ri";
 import { Header } from "../../components/Header";
 import { Pagination } from "../../components/Pagination";
 import { Sidebar } from "../../components/Sidebar";
-import { useQuery } from 'react-query'
-import { api } from "../../services/api";
 import { useUsers } from "../../services/hooks/useUsers";
+import { useState } from "react";
+import { api } from "../../services/api";
+import { queryClient } from "../../services/queryClient";
+import { GetServerSideProps } from "next";
 
+import { getUsers, GetUserProps } from '../../services/hooks/useUsers';
 
-export default function UserList() {
+interface UserListProps extends GetUserProps { }
 
-  const { data, isLoading, isError, isFetching } = useUsers()
+export default function UserList({ users, totalCount }: UserListProps) {
+
+  const [selectedPage, setSelectedPage] = useState(1)
+
+  const { data, isLoading, isError, isFetching } = useUsers(selectedPage)
+
 
 
   const isWideVersion = useBreakpointValue({
     base: false,
     lg: true
   })
+
+  async function handlePrefetingUser(userId: string) {
+    queryClient.prefetchQuery(['users', userId], async () => {
+      const response = await api.get(`users/${userId}`)
+
+      return response.data
+    }, {
+      staleTime: 1000 * 60 //1 min
+    })
+  }
 
 
   return (
@@ -34,7 +52,7 @@ export default function UserList() {
               {!isLoading && isFetching && <Spinner size="sm" ml="4" color="gray.500" />}
             </Heading>
 
-            <Link href="/users/create">
+            <NextLink href="/users/create">
               <Button
                 as="a"
                 fontSize="sm"
@@ -43,7 +61,7 @@ export default function UserList() {
               >
                 Criar Novo
               </Button>
-            </Link>
+            </NextLink>
           </HStack>
 
           {
@@ -70,7 +88,7 @@ export default function UserList() {
                   <Tbody>
 
                     {
-                      data.map(user => {
+                      data.users.map(user => {
                         return (
                           <Tr key={user.id}>
                             <Td px="6">
@@ -78,7 +96,9 @@ export default function UserList() {
                             </Td>
                             <Td>
                               <Box>
-                                <Text fontWeight="bold">{user.name}</Text>
+                                <Link color="purple.400" onMouseEnter={() => handlePrefetingUser(user.id)}>
+                                  <Text fontWeight="bold">{user.name}</Text>
+                                </Link>
                                 <Text color="gray.300" fontSize="sm">{user.email}</Text>
                               </Box>
                             </Td>
@@ -102,7 +122,11 @@ export default function UserList() {
                   </Tbody>
                 </Table>
 
-                <Pagination />
+                <Pagination
+                  onPageChange={setSelectedPage}
+                  currentPage={selectedPage}
+                  totalCountOfRegisters={data.totalCount}
+                />
               </>
             )
           }
@@ -113,3 +137,16 @@ export default function UserList() {
     </Box>
   )
 }
+
+
+// export const getServerSideProps: GetServerSideProps = async () => {
+
+//   const { users, totalCount } = await getUsers(1)
+
+//   return {
+//     props: {
+//       users,
+//       totalCount
+//     }
+//   }
+// }
