@@ -28,6 +28,7 @@
 </br>
 
 <h2>Rodando a aplicação:</h2>
+<p>API usada para testar a autenticação: https://github.com/rocketseat-education/ignite-reactjs-auth-backend</p>
 <p> Para rodar o aplicativo na sua máquina, basta seguir os seguintes passos... </p>
 
    <ul> 
