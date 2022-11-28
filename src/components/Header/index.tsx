@@ -4,11 +4,14 @@ import { Profile } from "./Profile";
 import { NavigationsNav } from "./NotificationsNav";
 import { SearchBox } from "./SearchBox";
 import { Logo } from "./Logo";
-import { RiMenuLine } from "react-icons/ri";
+import { RiMenuLine, RiLogoutCircleLine } from "react-icons/ri";
 import { useSidebarDrawer } from "../../contexts/SidebarDrawerContext";
+import { UseAuth } from "../../contexts/AuthContext";
 
 
 export function Header() {
+
+  const { sigOut } = UseAuth()
 
   const isWideVersion = useBreakpointValue({
     base: false,
@@ -54,6 +57,17 @@ export function Header() {
         <NavigationsNav />
 
         <Profile showProfileData={isWideVersion} />
+
+        <IconButton
+          aria-label="Open navigation"
+          icon={<Icon as={RiLogoutCircleLine} />}
+          variant="unstyled"
+          fontSize={24}
+          ml="4"
+          onClick={sigOut}
+        >
+
+        </IconButton>
 
       </Flex>
     </Flex>

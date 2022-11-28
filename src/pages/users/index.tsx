@@ -6,11 +6,9 @@ import { Pagination } from "../../components/Pagination";
 import { Sidebar } from "../../components/Sidebar";
 import { useUsers } from "../../services/hooks/useUsers";
 import { useState } from "react";
-import { api } from "../../services/api";
 import { queryClient } from "../../services/queryClient";
-import { GetServerSideProps } from "next";
 
-import { getUsers, GetUserProps } from '../../services/hooks/useUsers';
+import { GetUserProps } from '../../services/hooks/useUsers';
 
 interface UserListProps extends GetUserProps { }
 
@@ -29,9 +27,10 @@ export default function UserList({ users, totalCount }: UserListProps) {
 
   async function handlePrefetingUser(userId: string) {
     queryClient.prefetchQuery(['users', userId], async () => {
-      const response = await api.get(`users/${userId}`)
+      const response = await fetch(`users/${userId}`)
+      const data = await response.json()
 
-      return response.data
+      return data
     }, {
       staleTime: 1000 * 60 //1 min
     })
@@ -64,30 +63,30 @@ export default function UserList({ users, totalCount }: UserListProps) {
             </NextLink>
           </HStack>
 
-          {
+          {/* {
             isLoading ? (
               <Flex justifyContent="center">
                 <Spinner />
               </Flex>
             ) : isError ? (
               <Text>Erro ao carregar os usuários</Text>
-            ) : (
-              <>
-                <Table colorScheme="whiteAlpha">
-                  <Thead>
-                    <Tr>
-                      <Th px="6" color="gray.300" width="8">
-                        <Checkbox colorScheme="pink" />
-                      </Th>
-                      <Th>USUÁRIO</Th>
-                      {isWideVersion && <Th>DATA DE CADASTRO</Th>}
-                      <Th width="8"></Th>
-                    </Tr>
-                  </Thead>
+            ) : ( */}
+          <>
+            <Table colorScheme="whiteAlpha">
+              <Thead>
+                <Tr>
+                  <Th px="6" color="gray.300" width="8">
+                    <Checkbox colorScheme="pink" />
+                  </Th>
+                  <Th>USUÁRIO</Th>
+                  {isWideVersion && <Th>DATA DE CADASTRO</Th>}
+                  <Th width="8"></Th>
+                </Tr>
+              </Thead>
 
-                  <Tbody>
+              <Tbody>
 
-                    {
+                {/* {
                       data.users.map(user => {
                         return (
                           <Tr key={user.id}>
@@ -117,19 +116,274 @@ export default function UserList({ users, totalCount }: UserListProps) {
                           </Tr>
                         )
                       })
-                    }
+                    } */}
+                <Tr>
+                  <Td px="6">
+                    <Checkbox colorScheme="pink" />
+                  </Td>
+                  <Td>
+                    <Box>
+                      <Link color="purple.400">
+                        <Text fontWeight="bold">user01</Text>
+                      </Link>
+                      <Text color="gray.300" fontSize="sm">silva90@gmail.com</Text>
+                    </Box>
+                  </Td>
+                  {isWideVersion && <Td>20/06/22</Td>}
+                  <Td>
+                    {isWideVersion && <Button
+                      as="a"
+                      size="sm"
+                      fontSize="sm"
+                      colorScheme="purple"
+                      leftIcon={<Icon as={RiPencilLine} size={16} />}
+                    >
+                      Editar
+                    </Button>}
+                  </Td>
+                </Tr>
+                <Tr>
+                  <Td px="6">
+                    <Checkbox colorScheme="pink" />
+                  </Td>
+                  <Td>
+                    <Box>
+                      <Link color="purple.400">
+                        <Text fontWeight="bold">user01</Text>
+                      </Link>
+                      <Text color="gray.300" fontSize="sm">silva90@gmail.com</Text>
+                    </Box>
+                  </Td>
+                  {isWideVersion && <Td>20/06/22</Td>}
+                  <Td>
+                    {isWideVersion && <Button
+                      as="a"
+                      size="sm"
+                      fontSize="sm"
+                      colorScheme="purple"
+                      leftIcon={<Icon as={RiPencilLine} size={16} />}
+                    >
+                      Editar
+                    </Button>}
+                  </Td>
+                </Tr>
+                <Tr>
+                  <Td px="6">
+                    <Checkbox colorScheme="pink" />
+                  </Td>
+                  <Td>
+                    <Box>
+                      <Link color="purple.400">
+                        <Text fontWeight="bold">user01</Text>
+                      </Link>
+                      <Text color="gray.300" fontSize="sm">silva90@gmail.com</Text>
+                    </Box>
+                  </Td>
+                  {isWideVersion && <Td>20/06/22</Td>}
+                  <Td>
+                    {isWideVersion && <Button
+                      as="a"
+                      size="sm"
+                      fontSize="sm"
+                      colorScheme="purple"
+                      leftIcon={<Icon as={RiPencilLine} size={16} />}
+                    >
+                      Editar
+                    </Button>}
+                  </Td>
+                </Tr>
+                <Tr>
+                  <Td px="6">
+                    <Checkbox colorScheme="pink" />
+                  </Td>
+                  <Td>
+                    <Box>
+                      <Link color="purple.400">
+                        <Text fontWeight="bold">user01</Text>
+                      </Link>
+                      <Text color="gray.300" fontSize="sm">silva90@gmail.com</Text>
+                    </Box>
+                  </Td>
+                  {isWideVersion && <Td>20/06/22</Td>}
+                  <Td>
+                    {isWideVersion && <Button
+                      as="a"
+                      size="sm"
+                      fontSize="sm"
+                      colorScheme="purple"
+                      leftIcon={<Icon as={RiPencilLine} size={16} />}
+                    >
+                      Editar
+                    </Button>}
+                  </Td>
+                </Tr>
+                <Tr>
+                  <Td px="6">
+                    <Checkbox colorScheme="pink" />
+                  </Td>
+                  <Td>
+                    <Box>
+                      <Link color="purple.400">
+                        <Text fontWeight="bold">user01</Text>
+                      </Link>
+                      <Text color="gray.300" fontSize="sm">silva90@gmail.com</Text>
+                    </Box>
+                  </Td>
+                  {isWideVersion && <Td>20/06/22</Td>}
+                  <Td>
+                    {isWideVersion && <Button
+                      as="a"
+                      size="sm"
+                      fontSize="sm"
+                      colorScheme="purple"
+                      leftIcon={<Icon as={RiPencilLine} size={16} />}
+                    >
+                      Editar
+                    </Button>}
+                  </Td>
+                </Tr>
+                <Tr>
+                  <Td px="6">
+                    <Checkbox colorScheme="pink" />
+                  </Td>
+                  <Td>
+                    <Box>
+                      <Link color="purple.400">
+                        <Text fontWeight="bold">user01</Text>
+                      </Link>
+                      <Text color="gray.300" fontSize="sm">silva90@gmail.com</Text>
+                    </Box>
+                  </Td>
+                  {isWideVersion && <Td>20/06/22</Td>}
+                  <Td>
+                    {isWideVersion && <Button
+                      as="a"
+                      size="sm"
+                      fontSize="sm"
+                      colorScheme="purple"
+                      leftIcon={<Icon as={RiPencilLine} size={16} />}
+                    >
+                      Editar
+                    </Button>}
+                  </Td>
+                </Tr>
+                <Tr>
+                  <Td px="6">
+                    <Checkbox colorScheme="pink" />
+                  </Td>
+                  <Td>
+                    <Box>
+                      <Link color="purple.400">
+                        <Text fontWeight="bold">user01</Text>
+                      </Link>
+                      <Text color="gray.300" fontSize="sm">silva90@gmail.com</Text>
+                    </Box>
+                  </Td>
+                  {isWideVersion && <Td>20/06/22</Td>}
+                  <Td>
+                    {isWideVersion && <Button
+                      as="a"
+                      size="sm"
+                      fontSize="sm"
+                      colorScheme="purple"
+                      leftIcon={<Icon as={RiPencilLine} size={16} />}
+                    >
+                      Editar
+                    </Button>}
+                  </Td>
+                </Tr>
+                <Tr>
+                  <Td px="6">
+                    <Checkbox colorScheme="pink" />
+                  </Td>
+                  <Td>
+                    <Box>
+                      <Link color="purple.400">
+                        <Text fontWeight="bold">user01</Text>
+                      </Link>
+                      <Text color="gray.300" fontSize="sm">silva90@gmail.com</Text>
+                    </Box>
+                  </Td>
+                  {isWideVersion && <Td>20/06/22</Td>}
+                  <Td>
+                    {isWideVersion && <Button
+                      as="a"
+                      size="sm"
+                      fontSize="sm"
+                      colorScheme="purple"
+                      leftIcon={<Icon as={RiPencilLine} size={16} />}
+                    >
+                      Editar
+                    </Button>}
+                  </Td>
+                </Tr>
+                <Tr>
+                  <Td px="6">
+                    <Checkbox colorScheme="pink" />
+                  </Td>
+                  <Td>
+                    <Box>
+                      <Link color="purple.400">
+                        <Text fontWeight="bold">user01</Text>
+                      </Link>
+                      <Text color="gray.300" fontSize="sm">silva90@gmail.com</Text>
+                    </Box>
+                  </Td>
+                  {isWideVersion && <Td>20/06/22</Td>}
+                  <Td>
+                    {isWideVersion && <Button
+                      as="a"
+                      size="sm"
+                      fontSize="sm"
+                      colorScheme="purple"
+                      leftIcon={<Icon as={RiPencilLine} size={16} />}
+                    >
+                      Editar
+                    </Button>}
+                  </Td>
+                </Tr>
+                <Tr>
+                  <Td px="6">
+                    <Checkbox colorScheme="pink" />
+                  </Td>
+                  <Td>
+                    <Box>
+                      <Link color="purple.400">
+                        <Text fontWeight="bold">user01</Text>
+                      </Link>
+                      <Text color="gray.300" fontSize="sm">silva90@gmail.com</Text>
+                    </Box>
+                  </Td>
+                  {isWideVersion && <Td>20/06/22</Td>}
+                  <Td>
+                    {isWideVersion && <Button
+                      as="a"
+                      size="sm"
+                      fontSize="sm"
+                      colorScheme="purple"
+                      leftIcon={<Icon as={RiPencilLine} size={16} />}
+                    >
+                      Editar
+                    </Button>}
+                  </Td>
+                </Tr>
 
-                  </Tbody>
-                </Table>
+              </Tbody>
+            </Table>
 
-                <Pagination
+            {/* <Pagination
                   onPageChange={setSelectedPage}
                   currentPage={selectedPage}
                   totalCountOfRegisters={data.totalCount}
-                />
-              </>
-            )
-          }
+                /> */}
+            <Pagination
+              onPageChange={setSelectedPage}
+              currentPage={10}
+              totalCountOfRegisters={5}
+            />
+          </>
+
+
 
         </Box>
       </Flex>
@@ -150,3 +404,4 @@ export default function UserList({ users, totalCount }: UserListProps) {
 //     }
 //   }
 // }
+

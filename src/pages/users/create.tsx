@@ -8,9 +8,11 @@ import { yupResolver } from '@hookform/resolvers/yup'
 import { useMutation } from 'react-query';
 
 import Link from 'next/link'
-import { api } from "../../services/api";
+// import { api } from "../../services/api";
 import { useRouter } from "next/router";
 import { queryClient } from "../../services/queryClient";
+import { withSSRAuth } from "../../utils/withSSRAuth";
+import { getApi } from "../../services/api";
 
 type SignInFormData = {
   name: string,
@@ -32,35 +34,35 @@ export default function CreateUser() {
 
   const router = useRouter()
 
-  const createUser = useMutation(async (user: SignInFormData) => {
-    const response = await api.post('users', {
-      user: {
-        ...user,
-        create_at: new Date()
-      }
-    })
+  // const createUser = useMutation(async (user: SignInFormData) => {
+  //   const response = await api.post('users', {
+  //     user: {
+  //       ...user,
+  //       create_at: new Date()
+  //     }
+  //   })
 
-    return response.data.user
-  }, {
-    onSuccess: () => {
-      queryClient.invalidateQueries('users')
-    }
-  })
+  //   return response.data.user
+  // }, {
+  //   onSuccess: () => {
+  //     queryClient.invalidateQueries('users')
+  //   }
+  // })
 
   const { handleSubmit, register, formState } = useForm({ resolver: yupResolver(schema) })
   const { errors, isSubmitting } = formState
 
-  const handleCreateNewUser: SubmitHandler<SignInFormData> = async (values) => {
-    await createUser.mutateAsync(values)
+  // const handleCreateNewUser: SubmitHandler<SignInFormData> = async (values) => {
+  //   await createUser.mutateAsync(values)
 
-    router.push('/users')
-  }
+  //   router.push('/users')
+  // }
 
   return (
     <Box>
       <Header />
 
-      <Flex w="100%" maxW={1480} mx="auto" my="6" px="6" onSubmit={handleSubmit(handleCreateNewUser)}>
+      <Flex w="100%" maxW={1480} mx="auto" my="6" px="6" onSubmit={() => { }}>
         <Sidebar />
 
         <Box as="form" flex={1} borderRadius={8} p={["6", "8"]} bg="gray.800">
@@ -135,3 +137,19 @@ export default function CreateUser() {
     </Box>
   )
 }
+
+
+export const getServerSideProps = withSSRAuth(async (ctx) => {
+  const api = getApi(ctx)
+
+  const response = await api.get('/me')
+  console.log(response.data)
+
+
+  return {
+    props: {}
+  }
+}, {
+  permissions: ['metrics.list'],
+  roles: ['administrator', 'editor']
+})
